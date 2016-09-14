@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20160913052429) do
 
   create_table "devices", force: :cascade do |t|
     t.integer  "customer_id"
+    t.string   "uuid"
     t.boolean  "wants_notifications"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
