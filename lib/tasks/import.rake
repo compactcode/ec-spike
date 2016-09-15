@@ -8,7 +8,7 @@ namespace :import do
 
   desc 'Generate a bunch of data for existing customers.'
   task :events => :environment do
-    Account.find_each do |account|
+    Account.find_each(finish: 100000) do |account|
       PaymentWorker.perform_async({
         data: {
           account_id: account.external_id,
