@@ -1,24 +1,17 @@
-# README
+# Simulating large volumes of notficications being processed via sidekiq.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Setup
 
-Things you may want to cover:
+`rails db:create db:migrate`
 
-* Ruby version
+Import 50,000 records.
 
-* System dependencies
+`rake import:data`
 
-* Configuration
+Generate up to 100,000 notification events for the records that have been created.
 
-* Database creation
+`rake import:events`
 
-* Database initialization
+Process the queue using a 100 threads.
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+`sidekiq -c 100`
