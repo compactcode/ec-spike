@@ -20,4 +20,9 @@ namespace :import do
       })
     end
   end
+
+  desc 'Generate the sidekiq cache of notifiable accounts.'
+  task :cache => :environment do
+    PaymentWorker::NotifiableCache.refresh!
+  end
 end
