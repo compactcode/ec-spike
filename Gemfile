@@ -21,6 +21,10 @@ gem 'jbuilder', '~> 2.5'
 gem 'sidekiq'
 gem 'sinatra', '2.0.0.beta2'
 
+gem 'dotenv-rails'
+
+gem 'twilio-ruby'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

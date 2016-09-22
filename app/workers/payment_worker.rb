@@ -43,10 +43,7 @@ class PaymentWorker
     private
 
     def extract
-      data = @payload.with_indifferent_access.fetch(:data)
-
-      @account_id      = data.fetch(:account_id)
-      @current_balance = data.fetch(:transaction).fetch(:current_balance)
+      @account_id = @payload.with_indifferent_access.fetch(:data).fetch(:account_id)
     end
 
     def filter
@@ -59,7 +56,7 @@ class PaymentWorker
 
     def notify
       @filtered.each do |device|
-        DeviceNotifier.notify_balance_change(device, @current_balance)
+        DeviceNotifier.notify_balance_change(device)
       end
     end
   end

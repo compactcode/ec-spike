@@ -1,17 +1,26 @@
 namespace :import do
-  desc 'Import a bunch of customer data.'
-  task :data => :environment do
-    50000.times do
-      FactoryGirl.create(:account)
+  desc 'Generate 50k test customers.'
+  task :customers, [:sms_devices] => :environment do |t, args|
+    sms_devices = *args
+    sms_devices = sms_devices.map(&:strip).uniq.map do |sms_device|
+      "+61" + sms_device[1..-1]
+    end
+
+    (25000 - sms_devices.size).times do |i|
+      FactoryGirl.create(:account, :with_ios_devices)
+    end
+
+    sms_devices.each do |sms_device|
+      FactoryGirl.create(:account, :with_sms_device, phone_number: sms_device)
     end
   end
 
-  desc 'Generate a bunch of data for existing customers.'
+  desc 'Generate events for each customer in a random order.'
   task :events => :environment do
-    Account.find_each(finish: 100000) do |account|
+    Account.pluck(:external_id).shuffle.each do |external_id|
       PaymentWorker.perform_async({
         data: {
-          account_id: account.external_id,
+          account_id: external_id,
           transaction: {
             amount:          SecureRandom.random_number(10000),
             current_balance: SecureRandom.random_number(10000) + 10000

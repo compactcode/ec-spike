@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160913052429) do
+ActiveRecord::Schema.define(version: 20160922004856) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,7 +36,9 @@ ActiveRecord::Schema.define(version: 20160913052429) do
     t.boolean  "wants_notifications"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.string   "phone_number"
     t.index ["customer_id"], name: "index_devices_on_customer_id", using: :btree
+    t.index ["phone_number"], name: "index_devices_on_phone_number", unique: true, using: :btree
   end
 
   add_foreign_key "accounts", "customers"
